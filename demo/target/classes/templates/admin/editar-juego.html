@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link
+            href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+            rel="stylesheet" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Juego</title>
+    <link rel="stylesheet" href="/styleForm.css">
+    <style>
+        form .invalid-feedback {
+            display: block;
+        }
+    </style>
+    <style>
+        /* Estilo para separar los campos del formulario */
+        .form-group {
+            margin-bottom: 10px; /* Agrega un margen inferior de 10px entre los campos */
+        }
+
+        /* Estilo para hacer más grandes los títulos */
+        .form-label {
+            font-size: 15px; /* Tamaño de fuente personalizado para los títulos */
+            display: block;
+        }
+
+        /* Estilo para hacer más grandes los cuadros de texto */
+        .form-control {
+            width: 100%; /* Ancho al 100% del contenedor */
+        }
+
+        /* Estilo para el botón */
+        .btn-primary {
+            background-color: #c7c7c7; /* Fondo blanco */
+            color: #000; /* Texto negro */
+            transition: background-color 0.3s; /* Transición suave del color de fondo */
+            padding: 15px 30px;
+            font-size: 18px; /* Cambia el tamaño del texto */
+        }
+
+        .btn-primary:hover {
+            background-color: #000; /* Cambia a fondo negro al pasar el cursor por encima */
+            color: white; /* Texto blanco cuando el cursor está encima */
+        }
+    </style>
+</head>
+
+<body>
+<header class="header">
+    <a href="#" class="logo"> <i class="fas fa-cubes"></i> WΔKΔNĐΔ. </a>
+    <nav class="navbar">
+        <a href="/">Inicio</a>
+        <a href="/juegos">Juegos</a>
+        <a href="/admin">administración</a>
+    </nav>
+    <div class="icons">
+        <div id="user-btn" class="fas fa-user"></div>
+        <div id="user-dropdown" class="user-dropdown">
+            <a href="#">Mi Perfil</a>
+            <a href="#" id="logout-btn">Cerrar Sesión</a>
+        </div>
+    </div>
+</header>
+<main>
+    <section class="game-info">
+        <h2>Editar Juego</h2>
+        <br>
+        <form id="gameForm" method="post" th:object="${juego}" enctype="multipart/form-data" >
+            <div class="form-group">
+                <label for="titulo" class="form-label">Título del juego:<span class="required-field">*</span></label>
+                <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ingrese el título del juego"
+                th:field="*{titulo}" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></div>
+            </div>
+            <div class="form-group">
+                <label for="descripcion" class="form-label">Descripción del juego:<span class="required-field">*</span></label>
+                <textarea type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Ingrese la descripcion"
+                       th:field="*{descripcion}" required> </textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('descripcion')}"
+                     th:errors="*{descripcion}"></div>
+            </div>
+            <div class="form-group">
+                <label for="requisitos" class="form-label">Requisitos del juego:<span class="required-field">*</span></label>
+                <textarea class="form-control" id="requisitos" name="requisitos"
+                          placeholder="Ingrese los requisitos del juego" th:field="*{requisitos}" required > </textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('requisitos')}"
+                     th:errors="*{requisitos}"></div>
+            </div>
+            <div class="form-group">
+                <label for="image" class="form-label">Subir imagen:<span class="required-field">*</span></label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*"
+                       th:field="*{image}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('image')}"
+                     th:errors="*{image}"></div>
+
+
+                <div class="form-group">
+                    <label for="installer" class="form-label">Descargable del juego:<span class="required-field">*</span></label>
+                    <input type="file" class="form-control" id="installer" name="installer" accept=".zip, .rar"
+                           th:field="*{installer}">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('installer')}"
+                         th:errors="*{installer}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="categorias" class="form-label">Categorías:<span class="required-field">*</span></label>
+                    <select id="categorias" class="form-control" name="categorias" th:field="*{categorias}" multiple required>
+                        <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.titulo}"></option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('categorias')}" th:errors="*{categorias}">
+                    </div>
+                </div>
+                <div id="selectedCategories">Categorías seleccionadas:</div>
+
+                <button type="submit" class="btn-primary" > Guardar </button>
+
+            </div>
+        </form>
+    </section>
+</main>
+
+<script>
+    const userBtn = document.getElementById("user-btn");
+    const userDropdown = document.getElementById("user-dropdown");
+    const logoutBtn = document.getElementById("logout-btn");
+    const selectedCategories = document.getElementById("selectedCategories");
+
+    // Función para actualizar el mensaje de categorías seleccionadas
+    function updateSelectedCategories() {
+        const selectedOptions = document.getElementById("categorias").selectedOptions;
+        const selectedCategoryNames = [...selectedOptions].map(option => option.text);
+        selectedCategories.textContent = "Categorías seleccionadas: " + selectedCategoryNames.join(", ");
+    }
+
+    // Agrega un evento "change" al elemento <select> para detectar cambios
+    document.getElementById("categorias").addEventListener("change", updateSelectedCategories);
+
+    // Mostrar/ocultar el menú desplegable al hacer clic en el icono del usuario
+    userBtn.addEventListener("click", () => {
+        userDropdown.classList.toggle("active");
+    });
+
+    // Cerrar la sesión al hacer clic en "Cerrar Sesión"
+    logoutBtn.addEventListener("click", () => {
+        // Agrega aquí la lógica para cerrar la sesión, por ejemplo, redirigiendo a la página de inicio de sesión.
+        alert("Cerrando sesión..."); // Puedes reemplazar esto con tu lógica real.
+    });
+</script>
+
+</body>
+</html>
+
+
+
